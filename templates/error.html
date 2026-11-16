@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}{{ code }} · {{ title }} · Avenor Systems{% endblock %}
+{% block content %}
+<section class="error-page" aria-labelledby="error-title">
+  <div class="error-art" aria-hidden="true"><span>{{ code }}</span><div class="error-art-line"></div><small>AVENOR SYSTEMS</small></div>
+  <div class="error-content">
+    <p class="eyebrow">{{ code }} / REQUEST STATUS</p>
+    <h1 id="error-title">{{ title }}.</h1>
+    <p class="lead">{{ message }}</p>
+    <div class="actions"><a class="button" href="/">Return home →</a><a class="text-link" href="/contact">Contact us →</a></div>
+    <p class="micro">Thoughtful technology. A clearer next step.</p>
+  </div>
+</section>
+{% endblock %}

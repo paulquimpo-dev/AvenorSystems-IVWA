@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }} · Avenor Systems{% endblock %}
+{% block content %}
+<section class="page-intro">
+  <p class="eyebrow">{{ title }}</p>
+  <h1>{{ heading }}</h1>
+  <p class="lead">{{ intro }}</p>
+</section>
+<section class="section cards">
+  {% for label, body in sections %}
+  <article><h2>{{ label }}</h2><p>{{ body }}</p></article>
+  {% endfor %}
+</section>
+{% endblock %}

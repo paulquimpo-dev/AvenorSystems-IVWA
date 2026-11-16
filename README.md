@@ -1,6 +1,28 @@
-# Avenor Systems — local cybersecurity demonstration lab
+# Avenor Systems — Intentionally Vulnerable Web Application
 
-For the authorized university seminar **Think Like a Hacker: Cybersecurity & Offensive Security**. All company information, accounts and dashboard records are fictional. The intentionally weak authentication is for a private lab only. No cloud services, external assets or APIs are used.
+A local web security testing lab built for the university seminar **Think Like a Hacker: Cybersecurity & Offensive Security**. It provides controlled demonstrations of weak authentication, route discovery, role-based access control, and defensive controls.
+
+All company names, users, credentials, and dashboard records are fictional. The vulnerable configuration is for an isolated, private lab only. Do not expose it to the public Internet or use it against systems you do not own or have explicit permission to test. No cloud services, external assets, or APIs are used.
+
+## Project overview
+
+- **Application:** Flask web application with a PostgreSQL database.
+- **Vulnerable mode:** Demonstrates a guessable training password and login attempts without throttling.
+- **Secure mode:** Demonstrates stronger training credentials, per-IP request limits, and temporary account lockout.
+- **Optional authorization exercise:** With `PRIVILEGE_ESCALATION_DEMO=true`, a named fictional staff or support account can change its own application role. The default is disabled; protected mode requires an administrator.
+- **Testing workflow:** Documented HTTP request analysis, route enumeration, and bounded authentication testing using Burp Suite, Gobuster, and Hydra. These tools are not application dependencies.
+
+This project does **not** intentionally implement SQL injection or cross-site scripting. Its database access uses SQLAlchemy, and user-provided text is rendered through Flask templates. The training scenarios focus on authentication and authorization behavior.
+
+## Quick start
+
+This lab requires Python and PostgreSQL. Follow the [Windows setup](#windows-setup-powershell) below to create a dedicated local database, configure `.env`, initialize the demo accounts, and start the server. The application listens on `0.0.0.0:5000` so a private VM can connect; restrict access to a host-only lab network before starting vulnerable mode.
+
+For guided exercises, see [PRESENTER_GUIDE.md](PRESENTER_GUIDE.md), [PRIVILEGE_ESCALATION_GUIDE.md](PRIVILEGE_ESCALATION_GUIDE.md), and [SCENARIO_MATERIALS.md](SCENARIO_MATERIALS.md).
+
+## Verification status
+
+The integration suite in `tests/test_lab.py` covers the public pages, login behavior, secure-mode throttling and lockout, session invalidation, account permissions, the optional role escalation scenario, and logs that omit submitted passwords. The recorded run is summarized in [TEST_RESULTS.md](TEST_RESULTS.md). Testing requires a dedicated disposable PostgreSQL database; never point the test suite at a database containing useful data.
 
 ## Windows setup (PowerShell)
 
@@ -22,7 +44,7 @@ CREATE DATABASE cybersecurity_demo OWNER cyberlab;
 Use this dedicated database only for this lab. Never point the app at a real application database.
 
 ```powershell
-cd C:\Users\paule\Documents\ChatGPT\IntentionallyVulnerableWebsite
+cd path\to\AvenorSystems-IVWA
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
@@ -31,7 +53,7 @@ python -c "import secrets; print(secrets.token_hex(32))"
 notepad .env
 ```
 
-If activation is restricted, skip activation and replace `python` with `.\.venv\Scripts\python.exe`. If `python` or `py` points to a missing installation, repair Python or use an installed Python executable by its full path. A working `.venv` was created during implementation on this PC; it can be used directly.
+If activation is restricted, skip activation and replace `python` with `.\.venv\Scripts\python.exe`. If `python` or `py` points to a missing installation, repair Python or use an installed Python executable by its full path.
 
 Set `.env`:
 
@@ -122,5 +144,3 @@ Account rename: reset migrates the earlier alex.demo and support.demo fixture na
 ## Optional application privilege escalation lab
 
 See PRIVILEGE_ESCALATION_GUIDE.md for the Burp Repeater walkthrough. Add PRIVILEGE_ESCALATION_DEMO=true in .env to enable the separately gated, intentionally missing role authorization check. It defaults to false and is independent of VULNERABLE_MODE. Stop/reset/restart before each comparison. Reset restores staff/support roles and invalidates old sessions. Switching the authorization flag off alone does not demote a previously promoted user. POST /api/account/role only changes the authenticated caller, with a CSRF token and fixed role allowlist. In the vulnerable branch it accepts changes from the named Alex/Support fixtures; protected mode requires an administrator. Every role change attempt reaching authorization is logged in logs/auth.log. The workflow is available through Review account access in the authenticated Staff/Support workspace, never through public navigation.
-#   A v e n o r S y s t e m s - I V W A  
- 

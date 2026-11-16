@@ -1,0 +1,13 @@
+.env
+.venv/
+venv/
+__pycache__/
+*.pyc
+logs/
+.pytest_cache/
+.test-postgres/
+.test-postgres.log
+
+# Generated previews and local artifacts
+output/
+tmp/

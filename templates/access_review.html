@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Account access · Avenor Systems{% endblock %}
+{% block content %}
+<section class="page-intro"><p class="eyebrow">ACCOUNT ACCESS</p><h1>Your workspace access.</h1><p class="lead">Review the role associated with your fictional training account.</p></section>
+<section class="section"><form class="panel" method="post" action="/api/account/role">
+  <h2>{{ account.username }}</h2><p>Current role: <strong>{{ account.role }}</strong></p>
+  <input type="hidden" name="csrf" value="{{ session.csrf }}">
+  <input type="hidden" name="role" value="{{ account.role }}">
+  <button class="button" type="submit">Submit role review →</button>
+  <small>Local training workflow. Role changes require administrator approval when authorization protection is enabled.</small>
+</form></section>
+{% endblock %}

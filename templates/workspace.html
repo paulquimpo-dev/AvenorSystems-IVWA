@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}{{ role }} workspace · Avenor Systems{% endblock %}
+{% block content %}
+<section class="dashboard section">
+  <div class="dashboard-heading"><div><p class="eyebrow">{{ role }} WORKSPACE</p><h1>{{ heading }}</h1><p>Signed in as {{ username }} · {{ role }}</p></div>
+    <form method="post" action="/admin/logout"><input type="hidden" name="csrf" value="{{ session.csrf }}"><button class="button" type="submit">Logout →</button></form>
+  </div>
+  <p class="notice">LOCAL TRAINING · Fictional, read-only records · Access limited by account role</p>
+  <p><a class="text-link" href="/workspace/access">Review account access →</a></p>
+  <section class="panel"><h2>{{ 'Assigned tasks' if role == 'Staff' else 'Sample tickets' }}</h2>
+    <table><thead><tr><th>Reference</th><th>Summary</th><th>Status</th></tr></thead><tbody>
+      {% for reference, summary, status in records %}<tr><td>{{ reference }}</td><td>{{ summary }}</td><td>{{ status }}</td></tr>{% endfor %}
+    </tbody></table>
+  </section>
+</section>
+{% endblock %}
